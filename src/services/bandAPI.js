@@ -2,14 +2,19 @@ import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import mockBandAPI from './mockBandAPI';
+import { BAND_CLIENT_ID, BAND_CLIENT_SECRET, APP_ENV } from '@env';
 
 // WebBrowser 설정
 WebBrowser.maybeCompleteAuthSession();
 
 // Band API 설정
 const BAND_API_BASE_URL = 'https://openapi.band.us/v2.1';
-const BAND_CLIENT_ID = process.env.BAND_CLIENT_ID || 'your_band_client_id';
-const BAND_CLIENT_SECRET = process.env.BAND_CLIENT_SECRET || 'your_band_client_secret';
+const CLIENT_ID = BAND_CLIENT_ID || 'your_band_client_id';
+const CLIENT_SECRET = BAND_CLIENT_SECRET || 'your_band_client_secret';
+
+// 개발 환경에서는 Mock API 사용
+const USE_MOCK_API = APP_ENV === 'development' || !CLIENT_ID || CLIENT_ID === 'your_band_client_id';
 const REDIRECT_URI = AuthSession.makeRedirectUri({
   scheme: 'dongbaejul',
   path: 'auth/band'
@@ -25,9 +30,15 @@ class BandAPI {
    * Band OAuth 로그인 시작
    */
   async startBandLogin() {
+    // 개발 환경에서는 Mock API 사용
+    if (USE_MOCK_API) {
+      console.log('🔧 Mock Band API 사용 중...');
+      return await mockBandAPI.startBandLogin();
+    }
+
     try {
       const request = new AuthSession.AuthRequest({
-        clientId: BAND_CLIENT_ID,
+        clientId: CLIENT_ID,
         scopes: ['profile', 'band', 'band_write'],
         redirectUri: REDIRECT_URI,
         responseType: AuthSession.ResponseType.Code,
@@ -91,6 +102,10 @@ class BandAPI {
    * 저장된 토큰으로 로그인 상태 복원
    */
   async restoreSession() {
+    if (USE_MOCK_API) {
+      return await mockBandAPI.restoreSession();
+    }
+
     try {
       const accessToken = await AsyncStorage.getItem('band_access_token');
       if (accessToken) {
@@ -128,6 +143,10 @@ class BandAPI {
    * 사용자가 가입한 밴드 목록 가져오기
    */
   async getUserBands() {
+    if (USE_MOCK_API) {
+      return await mockBandAPI.getUserBands();
+    }
+
     try {
       const response = await axios.get(`${BAND_API_BASE_URL}/bands`, {
         headers: {
@@ -253,6 +272,10 @@ class BandAPI {
    * 배드민턴 동호회 밴드 찾기 (키워드 검색)
    */
   async findBadmintonBands() {
+    if (USE_MOCK_API) {
+      return await mockBandAPI.findBadmintonBands();
+    }
+
     try {
       const userBands = await this.getUserBands();
       const badmintonKeywords = ['배드민턴', '배민', '셔틀콕', '동배즐', 'badminton'];
@@ -275,6 +298,10 @@ class BandAPI {
    * 밴드 데이터를 동배즐 앱 형식으로 변환
    */
   convertBandToClub(bandData, members = []) {
+    if (USE_MOCK_API) {
+      return mockBandAPI.convertBandToClub(bandData, members);
+    }
+
     return {
       id: bandData.band_key,
       name: bandData.name,
@@ -305,6 +332,10 @@ class BandAPI {
    * 밴드 멤버 데이터를 동배즐 사용자 형식으로 변환
    */
   convertBandUserToAppUser(bandUser) {
+    if (USE_MOCK_API) {
+      return mockBandAPI.convertBandUserToAppUser(bandUser);
+    }
+
     return {
       id: bandUser.user_key,
       name: bandUser.name,
