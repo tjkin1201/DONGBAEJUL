@@ -28,7 +28,7 @@
 
 ```bash
 # 저장소 클론
-git clone https://github.com/[YOUR_USERNAME]/DONGBAEJUL.git
+git clone https://github.com/tjkin1201/DONGBAEJUL.git
 cd DONGBAEJUL
 
 # 의존성 설치
