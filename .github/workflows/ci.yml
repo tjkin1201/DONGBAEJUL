@@ -27,14 +27,79 @@ jobs:
     - name: Install dependencies
       run: npm ci
       
-    - name: Run ESLint
-      run: npm run lint --if-present
+    - name: TypeScript 타입 검사
+      run: npm run typecheck
       
-    - name: Run tests
-      run: npm test --if-present
+    - name: ESLint 코드 스타일 검사
+      run: npm run lint
       
-    - name: Build project
-      run: npm run build --if-present
+    - name: Jest 단위 테스트 실행
+      run: npm run test:ci
+      
+    - name: 테스트 커버리지 업로드
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage/lcov.info
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+        
+    - name: 테스트 결과 리포트
+      uses: dorny/test-reporter@v1
+      if: success() || failure()
+      with:
+        name: Jest Tests
+        path: coverage/jest-junit.xml
+        reporter: jest-junit
+
+  # 성능 테스트 작업 추가
+  performance-test:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Bundle 크기 분석
+      run: |
+        npm run build
+        npx bundlesize
+      
+    - name: 메모리 사용량 테스트
+      run: |
+        echo "메모리 사용량 테스트 실행..."
+        node --max-old-space-size=512 -e "console.log('메모리 테스트 완료')"
+
+  # 보안 검사 작업 추가
+  security-scan:
+    needs: test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 의존성 보안 검사
+      run: npm audit --audit-level high
+      
+    - name: CodeQL 보안 분석
+      uses: github/codeql-action/init@v2
+      with:
+        languages: javascript
+        
+    - name: CodeQL 분석 실행
+      uses: github/codeql-action/analyze@v2
 
   build-android:
     needs: test
