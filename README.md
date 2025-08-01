@@ -28,8 +28,8 @@
 
 ```bash
 # 저장소 클론
-git clone https://github.com/your-repo/dongbaejul-frontend.git
-cd dongbaejul-frontend
+git clone https://github.com/[YOUR_USERNAME]/DONGBAEJUL.git
+cd DONGBAEJUL
 
 # 의존성 설치
 npm install

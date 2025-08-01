@@ -39,7 +39,7 @@ const BandClubSelectionScreen = ({ navigation }) => {
       // 클럽 선택 완료 후 메인 화면으로 이동
       navigation.reset({
         index: 0,
-        routes: [{ name: 'MainTabs' }],
+        routes: [{ name: 'Main' }],
       });
     } catch (error) {
       console.error('클럽 선택 실패:', error);
@@ -53,7 +53,7 @@ const BandClubSelectionScreen = ({ navigation }) => {
     // 클럽 선택 없이 메인으로 이동 (일반 사용자로)
     navigation.reset({
       index: 0,
-      routes: [{ name: 'MainTabs' }],
+      routes: [{ name: 'Main' }],
     });
   };
 

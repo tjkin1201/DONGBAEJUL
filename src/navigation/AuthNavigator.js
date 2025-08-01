@@ -24,6 +24,7 @@ const AuthNavigator = () => {
       <Stack.Screen name="Signup" component={SignupScreen} />
       <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
       <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
+      <Stack.Screen name="BandClubSelection" component={BandClubSelectionScreen} />
     </Stack.Navigator>
   );
 };
