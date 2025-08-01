@@ -1,0 +1,45 @@
+{
+  "expo": {
+    "name": "동배즐",
+    "slug": "dongbaejul",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#1976D2"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.dongbaejul.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#1976D2"
+      },
+      "package": "com.dongbaejul.app",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "NOTIFICATIONS"
+      ]
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-location",
+      "expo-camera",
+      "expo-notifications",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "앱에서 프로필 사진을 업로드하기 위해 사진 접근 권한이 필요합니다."
+        }
+      ]
+    ]
+  }
+}
