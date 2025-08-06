@@ -18,6 +18,13 @@ import BoardScreen from '../screens/club/BoardScreen';
 import CreatePostScreen from '../screens/club/CreatePostScreen';
 import PostDetailScreen from '../screens/club/PostDetailScreen';
 
+// 게임 관리 스크린들
+import BadmintonScoreScreen from '../screens/games/BadmintonScoreScreen';
+import GameRankingScreen from '../screens/games/GameRankingScreen';
+import GameStatisticsScreen from '../screens/games/GameStatisticsScreen';
+import GameHistoryScreen from '../screens/games/GameHistoryScreen';
+import CreateGameScreen from '../screens/CreateGameScreen';
+
 // 상세 스크린들
 import ClubDetailScreen from '../screens/detail/ClubDetailScreen';
 import ClubCreateScreen from '../screens/detail/ClubCreateScreen';
@@ -34,6 +41,10 @@ import PhotoDetailScreen from '../screens/detail/PhotoDetailScreen';
 import PhotoAlbumsScreen from '../screens/detail/PhotoAlbumsScreen';
 import ConversationsScreen from '../screens/main/ConversationsScreen';
 import PrivateChatScreen from '../screens/main/PrivateChatScreen';
+
+// 관리자 스크린들
+import AdminDashboard from '../screens/admin/AdminDashboard';
+import PostManagement from '../screens/admin/PostManagement';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -87,6 +98,24 @@ const HomeStack = () => (
       component={PostDetailScreen}
       options={{ 
         title: '게시글',
+        headerStyle: { backgroundColor: theme.colors.primary },
+        headerTintColor: '#fff',
+      }}
+    />
+    <Stack.Screen 
+      name="AdminDashboard" 
+      component={AdminDashboard}
+      options={{ 
+        title: '관리자 대시보드',
+        headerStyle: { backgroundColor: theme.colors.primary },
+        headerTintColor: '#fff',
+      }}
+    />
+    <Stack.Screen 
+      name="PostManagement" 
+      component={PostManagement}
+      options={{ 
+        title: '게시글 관리',
         headerStyle: { backgroundColor: theme.colors.primary },
         headerTintColor: '#fff',
       }}
@@ -145,6 +174,51 @@ const GamesStack = () => (
       component={GameCreateScreen}
       options={{ 
         title: '게임 만들기',
+        headerStyle: { backgroundColor: theme.colors.primary },
+        headerTintColor: '#fff',
+      }}
+    />
+    <Stack.Screen 
+      name="CreateGame" 
+      component={CreateGameScreen}
+      options={{ 
+        title: '새 게임 만들기',
+        headerStyle: { backgroundColor: theme.colors.primary },
+        headerTintColor: '#fff',
+      }}
+    />
+    <Stack.Screen 
+      name="BadmintonScore" 
+      component={BadmintonScoreScreen}
+      options={{ 
+        title: '배드민턴 스코어',
+        headerStyle: { backgroundColor: theme.colors.primary },
+        headerTintColor: '#fff',
+      }}
+    />
+    <Stack.Screen 
+      name="GameRanking" 
+      component={GameRankingScreen}
+      options={{ 
+        title: '랭킹',
+        headerStyle: { backgroundColor: theme.colors.primary },
+        headerTintColor: '#fff',
+      }}
+    />
+    <Stack.Screen 
+      name="GameStatistics" 
+      component={GameStatisticsScreen}
+      options={{ 
+        title: '게임 통계',
+        headerStyle: { backgroundColor: theme.colors.primary },
+        headerTintColor: '#fff',
+      }}
+    />
+    <Stack.Screen 
+      name="GameHistory" 
+      component={GameHistoryScreen}
+      options={{ 
+        title: '게임 기록',
         headerStyle: { backgroundColor: theme.colors.primary },
         headerTintColor: '#fff',
       }}

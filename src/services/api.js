@@ -5,7 +5,7 @@ import Logger from '../utils/logger';
 
 // API 기본 설정
 const api = axios.create({
-  baseURL: API_BASE_URL || 'http://localhost:3000/api/v1',
+  baseURL: API_BASE_URL || 'http://localhost:3000/api',
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',

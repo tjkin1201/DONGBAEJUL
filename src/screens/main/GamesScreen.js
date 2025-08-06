@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, FlatList, RefreshControl } from 'react-native';
+import { View, StyleSheet, FlatList, RefreshControl, ScrollView } from 'react-native';
 import { 
   Text, 
   Card, 
@@ -8,7 +8,9 @@ import {
   Searchbar,
   FAB,
   SegmentedButtons,
-  ActivityIndicator 
+  ActivityIndicator,
+  IconButton,
+  Surface
 } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { gameAPI } from '../../services/api';
@@ -27,6 +29,45 @@ const GamesScreen = ({ navigation }) => {
     { value: 'upcoming', label: '예정' },
     { value: 'completed', label: '완료' },
     { value: 'my', label: '내 게임' },
+  ];
+
+  // 게임 관리 메뉴 옵션
+  const gameManagementOptions = [
+    {
+      title: '새 게임 만들기',
+      subtitle: '배드민턴 게임을 생성하세요',
+      icon: 'plus-circle',
+      color: '#4caf50',
+      onPress: () => navigation.navigate('CreateGame'),
+    },
+    {
+      title: '스코어 입력',
+      subtitle: '실시간 경기 점수 기록',
+      icon: 'scoreboard',
+      color: '#ff9800',
+      onPress: () => navigation.navigate('BadmintonScore'),
+    },
+    {
+      title: '랭킹',
+      subtitle: '플레이어 순위 확인',
+      icon: 'trophy',
+      color: '#ffd700',
+      onPress: () => navigation.navigate('GameRanking'),
+    },
+    {
+      title: '통계',
+      subtitle: '경기 통계 및 분석',
+      icon: 'chart-line',
+      color: '#2196f3',
+      onPress: () => navigation.navigate('GameStatistics'),
+    },
+    {
+      title: '게임 기록',
+      subtitle: '과거 경기 기록 조회',
+      icon: 'history',
+      color: '#9c27b0',
+      onPress: () => navigation.navigate('GameHistory'),
+    },
   ];
 
   useEffect(() => {
