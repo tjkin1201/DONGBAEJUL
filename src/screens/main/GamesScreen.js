@@ -225,6 +225,35 @@ const GamesScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* 게임 관리 메뉴 섹션 */}
+      <Surface style={styles.managementSection}>
+        <Text style={styles.sectionTitle}>🎯 게임 관리</Text>
+        <ScrollView 
+          horizontal 
+          showsHorizontalScrollIndicator={false}
+          style={styles.managementScrollView}
+        >
+          {gameManagementOptions.map((option, index) => (
+            <Card 
+              key={index} 
+              style={styles.managementCard}
+              onPress={option.onPress}
+            >
+              <Card.Content style={styles.managementCardContent}>
+                <IconButton
+                  icon={option.icon}
+                  size={32}
+                  iconColor={option.color}
+                  style={styles.managementIcon}
+                />
+                <Text style={styles.managementTitle}>{option.title}</Text>
+                <Text style={styles.managementSubtitle}>{option.subtitle}</Text>
+              </Card.Content>
+            </Card>
+          ))}
+        </ScrollView>
+      </Surface>
+
       <View style={styles.header}>
         <Searchbar
           placeholder="게임 제목, 지역으로 검색..."
@@ -293,6 +322,46 @@ const styles = StyleSheet.create({
     marginTop: theme.spacing.md,
     fontSize: 16,
     color: theme.colors.text,
+  },
+  managementSection: {
+    backgroundColor: theme.colors.surface,
+    elevation: 2,
+    paddingVertical: theme.spacing.lg,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: theme.colors.primary,
+    marginHorizontal: theme.spacing.lg,
+    marginBottom: theme.spacing.md,
+  },
+  managementScrollView: {
+    paddingHorizontal: theme.spacing.lg,
+  },
+  managementCard: {
+    width: 140,
+    marginRight: theme.spacing.md,
+    elevation: 2,
+  },
+  managementCardContent: {
+    alignItems: 'center',
+    paddingVertical: theme.spacing.md,
+  },
+  managementIcon: {
+    marginBottom: theme.spacing.xs,
+  },
+  managementTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: theme.spacing.xs,
+    color: theme.colors.text,
+  },
+  managementSubtitle: {
+    fontSize: 11,
+    textAlign: 'center',
+    color: theme.colors.onSurfaceVariant,
+    lineHeight: 14,
   },
   header: {
     padding: theme.spacing.lg,
