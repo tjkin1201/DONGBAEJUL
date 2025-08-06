@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏸 동배즐 프로토타입</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background-color: #FFFFFF;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .app {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-width: 400px;
+            margin: 0 auto;
+            border-left: 1px solid #E0E0E0;
+            border-right: 1px solid #E0E0E0;
+            background: #FFFFFF;
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            padding-bottom: 100px;
+        }
+
+        .screen-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #FF6B35;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .large-button {
+            background-color: #FF6B35;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px 24px;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 8px 0;
+            min-height: 60px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .large-button:hover {
+            background-color: #E55A2B;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .large-button:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .secondary-button {
+            background-color: #2196F3;
+        }
+
+        .secondary-button:hover {
+            background-color: #1976D2;
+        }
+
+        .success-button {
+            background-color: #4CAF50;
+        }
+
+        .success-button:hover {
+            background-color: #388E3C;
+        }
+
+        .status-card {
+            background-color: #F5F5F5;
+            padding: 16px;
+            border-radius: 12px;
+            margin: 8px 0;
+            border-left: 4px solid #FF6B35;
+        }
+
+        .success-card {
+            border-left-color: #4CAF50;
+            background-color: #E8F5E8;
+        }
+
+        .warning-card {
+            border-left-color: #FFC107;
+            background-color: #FFF8E1;
+        }
+
+        .card-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .card-content {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .score-container {
+            margin: 20px 0;
+        }
+
+        .vs-container {
+            text-align: center;
+            padding: 16px;
+            background-color: #F5F5F5;
+            border-radius: 12px;
+            margin: 8px 0;
+        }
+
+        .vs-text {
+            font-size: 18px;
+            font-weight: bold;
+            color: #666;
+        }
+
+        .score-text {
+            font-size: 32px;
+            font-weight: bold;
+            color: #FF6B35;
+            margin-top: 8px;
+        }
+
+        .bottom-nav {
+            display: flex;
+            background-color: #FFFFFF;
+            border-top: 1px solid #E0E0E0;
+            padding: 8px 0;
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .nav-item:hover {
+            background-color: #FFF3EF;
+        }
+
+        .nav-item.active {
+            background-color: #FFF3EF;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .nav-item.active .nav-icon {
+            font-size: 22px;
+        }
+
+        .nav-text {
+            font-size: 12px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .nav-item.active .nav-text {
+            color: #FF6B35;
+            font-weight: bold;
+        }
+
+        .team-button {
+            margin: 8px 0;
+            min-height: 80px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- 홈 화면 -->
+        <div id="home-screen" class="content">
+            <div class="screen-title">🏸 동배즐</div>
+            
+            <div class="status-card success-card">
+                <div class="card-icon">📅</div>
+                <div class="card-title">🏸 오늘 게임</div>
+                <div class="card-content">동탄 배드민턴 클럽 정기 게임</div>
+            </div>
+
+            <button class="large-button" id="participate-btn">게임에 참가하기</button>
+            
+            <div id="participate-success" class="status-card success-card hidden">
+                <div class="card-icon">🎉</div>
+                <div class="card-title">✅ 참가 확정</div>
+                <div class="card-content">게임 참가가 완료되었습니다!</div>
+            </div>
+
+            <button class="large-button secondary-button" id="checkin-btn">체육관 체크인하기</button>
+            
+            <div id="checkin-success" class="status-card success-card hidden">
+                <div class="card-icon">✅</div>
+                <div class="card-title">📍 체크인 완료</div>
+                <div class="card-content">체육관 도착을 확인했습니다</div>
+            </div>
+
+            <div class="status-card">
+                <div class="card-icon">⏱️</div>
+                <div class="card-title">⏰ 내 차례까지</div>
+                <div class="card-content">2번째 대기 (약 15분 후)</div>
+            </div>
+        </div>
+
+        <!-- 체크인 화면 -->
+        <div id="checkin-screen" class="content hidden">
+            <div class="screen-title">📱 체크인</div>
+            
+            <div class="status-card">
+                <div class="card-icon">📍</div>
+                <div class="card-title">🏟️ 체육관 도착 확인</div>
+                <div class="card-content">아래 버튼을 눌러 도착을 알려주세요</div>
+            </div>
+
+            <button class="large-button success-button" id="checkin-action-btn">체육관 도착!</button>
+
+            <div class="status-card">
+                <div class="card-icon">ℹ️</div>
+                <div class="card-title">💡 체크인 안내</div>
+                <div class="card-content">게임 시작 30분 전까지 체크인하세요. 늦으면 자동으로 대기 순서가 밀려납니다.</div>
+            </div>
+        </div>
+
+        <!-- 게임 현황 화면 -->
+        <div id="gameboard-screen" class="content hidden">
+            <div class="screen-title">🎮 게임 현황</div>
+            
+            <div class="status-card warning-card">
+                <div class="card-icon">⏱️</div>
+                <div class="card-title">🎯 내 차례</div>
+                <div class="card-content">2번째 대기 (약 15분 후)</div>
+            </div>
+
+            <div class="status-card success-card">
+                <div class="card-icon">🔥</div>
+                <div class="card-title">🏸 A코트 (진행 중)</div>
+                <div class="card-content">김철수 & 이영희 vs 박민수 & 정지은<br>현재 스코어: 15 - 12</div>
+            </div>
+
+            <div class="status-card">
+                <div class="card-icon">✅</div>
+                <div class="card-title">🏸 B코트 (완료)</div>
+                <div class="card-content">최대한 & 한소희 vs 윤상민 & 김나영<br>최종 스코어: 21 - 18</div>
+            </div>
+
+            <div class="status-card">
+                <div class="card-icon">📈</div>
+                <div class="card-title">📊 오늘 진행률</div>
+                <div class="card-content">총 6게임 중 3게임 완료 (50%)</div>
+            </div>
+        </div>
+
+        <!-- 점수 입력 화면 -->
+        <div id="scoreinput-screen" class="content hidden">
+            <div class="screen-title">⚡ 점수 입력</div>
+            
+            <div class="status-card">
+                <div class="card-icon">🎯</div>
+                <div class="card-title">🏸 A코트 게임</div>
+                <div class="card-content">1세트 • 21점 먼저</div>
+            </div>
+
+            <div class="score-container">
+                <button class="large-button team-button" id="team-a-btn">팀 A 승리 (<span id="team-a-score">15</span>점)</button>
+
+                <div class="vs-container">
+                    <div class="vs-text">VS</div>
+                    <div class="score-text"><span id="display-a-score">15</span> - <span id="display-b-score">12</span></div>
+                </div>
+
+                <button class="large-button secondary-button team-button" id="team-b-btn">팀 B 승리 (<span id="team-b-score">12</span>점)</button>
+            </div>
+
+            <div class="status-card">
+                <div class="card-icon">ℹ️</div>
+                <div class="card-title">💡 점수 입력 팁</div>
+                <div class="card-content">승리한 팀 버튼을 눌러주세요. 실수하면 새로고침 후 다시 입력하세요.</div>
+            </div>
+        </div>
+
+        <!-- 하단 네비게이션 -->
+        <div class="bottom-nav">
+            <div class="nav-item active" data-screen="home">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-text">홈</div>
+            </div>
+            <div class="nav-item" data-screen="checkin">
+                <div class="nav-icon">📱</div>
+                <div class="nav-text">체크인</div>
+            </div>
+            <div class="nav-item" data-screen="gameboard">
+                <div class="nav-icon">🎮</div>
+                <div class="nav-text">게임현황</div>
+            </div>
+            <div class="nav-item" data-screen="scoreinput">
+                <div class="nav-icon">⚡</div>
+                <div class="nav-text">점수입력</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 상태 관리
+        let gameState = {
+            isParticipating: false,
+            isCheckedIn: false,
+            teamAScore: 15,
+            teamBScore: 12
+        };
+
+        // 화면 네비게이션
+        function showScreen(screenName) {
+            // 모든 화면 숨기기
+            document.querySelectorAll('.content').forEach(screen => {
+                screen.classList.add('hidden');
+            });
+            
+            // 선택된 화면 보이기
+            document.getElementById(screenName + '-screen').classList.remove('hidden');
+            
+            // 네비게이션 활성화 상태 업데이트
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`[data-screen="${screenName}"]`).classList.add('active');
+        }
+
+        // 햅틱 피드백 시뮬레이션 (웹에서는 진동)
+        function hapticFeedback() {
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+        }
+
+        // 알림 표시
+        function showAlert(title, message) {
+            alert(title + '\n\n' + message);
+        }
+
+        // 이벤트 리스너 설정
+        document.addEventListener('DOMContentLoaded', function() {
+            // 네비게이션 버튼들
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const screen = this.getAttribute('data-screen');
+                    showScreen(screen);
+                    hapticFeedback();
+                });
+            });
+
+            // 게임 참가 버튼
+            document.getElementById('participate-btn').addEventListener('click', function() {
+                gameState.isParticipating = true;
+                this.classList.add('hidden');
+                document.getElementById('participate-success').classList.remove('hidden');
+                hapticFeedback();
+                showAlert('참가 완료!', '게임 참가가 확정되었습니다.');
+            });
+
+            // 체크인 버튼 (홈에서)
+            document.getElementById('checkin-btn').addEventListener('click', function() {
+                showScreen('checkin');
+                hapticFeedback();
+            });
+
+            // 체크인 액션 버튼 (체크인 화면에서)
+            document.getElementById('checkin-action-btn').addEventListener('click', function() {
+                gameState.isCheckedIn = true;
+                hapticFeedback();
+                showAlert('체크인 완료!', '도착이 확인되었습니다.');
+                
+                // 홈 화면 업데이트
+                document.getElementById('checkin-btn').classList.add('hidden');
+                document.getElementById('checkin-success').classList.remove('hidden');
+                
+                // 홈으로 이동
+                setTimeout(() => showScreen('home'), 1000);
+            });
+
+            // 팀 A 점수 버튼
+            document.getElementById('team-a-btn').addEventListener('click', function() {
+                gameState.teamAScore++;
+                updateScoreDisplay();
+                hapticFeedback();
+                showAlert('점수 추가!', '팀 A에 1점이 추가되었습니다.');
+            });
+
+            // 팀 B 점수 버튼
+            document.getElementById('team-b-btn').addEventListener('click', function() {
+                gameState.teamBScore++;
+                updateScoreDisplay();
+                hapticFeedback();
+                showAlert('점수 추가!', '팀 B에 1점이 추가되었습니다.');
+            });
+
+            function updateScoreDisplay() {
+                document.getElementById('team-a-score').textContent = gameState.teamAScore;
+                document.getElementById('team-b-score').textContent = gameState.teamBScore;
+                document.getElementById('display-a-score').textContent = gameState.teamAScore;
+                document.getElementById('display-b-score').textContent = gameState.teamBScore;
+            }
+        });
+
+        // 버튼 터치 효과
+        document.addEventListener('click', function(e) {
+            if (e.target.tagName === 'BUTTON') {
+                e.target.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    e.target.style.transform = '';
+                }, 100);
+            }
+        });
+
+        console.log('🏸 동배즐 프로토타입이 로드되었습니다!');
+        console.log('📱 모바일 환경에서 테스트해보세요.');
+    </script>
+</body>
+</html>

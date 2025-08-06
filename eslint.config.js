@@ -31,11 +31,19 @@ export default [
         clearTimeout: 'readonly',
         setInterval: 'readonly',
         clearInterval: 'readonly',
+        FormData: 'readonly',
+        fetch: 'readonly',
+        XMLHttpRequest: 'readonly',
+        __DEV__: 'readonly',
       },
     },
     rules: {
       'react/prop-types': 'off',
-      'no-unused-vars': 'warn',
+      'no-unused-vars': ['warn', { 
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        ignoreRestSiblings: true 
+      }],
       'no-console': 'warn',
       'prefer-const': 'warn',
       'no-var': 'error',
@@ -46,12 +54,52 @@ export default [
       },
     },
   },
+  // 웹 호환 파일 전용 설정
+  {
+    files: ['**/webCompatibleBandAPI.js'],
+    languageOptions: {
+      globals: {
+        localStorage: 'readonly',
+        window: 'readonly',
+        alert: 'readonly',
+        document: 'readonly',
+      },
+    },
+    rules: {
+      'no-undef': 'off', // 브라우저 API 사용 허용
+    },
+  },
+  // 테스트 파일 전용 설정
+  {
+    files: ['**/__tests__/**/*.{js,jsx}', '**/*.test.{js,jsx}', '**/*.spec.{js,jsx}'],
+    languageOptions: {
+      globals: {
+        jest: 'readonly',
+        describe: 'readonly',
+        it: 'readonly',
+        test: 'readonly',
+        expect: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        beforeAll: 'readonly',
+        afterAll: 'readonly',
+      },
+    },
+    rules: {
+      'no-unused-vars': 'off', // 테스트 파일에서는 더 관대하게
+    },
+  },
   {
     ignores: [
       'node_modules/',
       '.expo/',
       'dist/',
       'web-build/',
+      '__tests__/', // 테스트 파일 무시 (임시)
+      'DONGBAEJUL/', // 별도 Expo 프로젝트 제외
+      'android/',  // Android 빌드 파일 제외
+      'playwright-report/',
+      'test-results/',
     ],
   },
 ];

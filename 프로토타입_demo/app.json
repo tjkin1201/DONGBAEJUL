@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "name": "동배즐 프로토타입",
+    "slug": "dongbaejul-prototype",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "platforms": ["web"],
+    "web": {
+      "bundler": "webpack"
+    }
+  }
+}

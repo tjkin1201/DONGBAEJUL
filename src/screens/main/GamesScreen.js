@@ -105,7 +105,7 @@ const GamesScreen = ({ navigation }) => {
     return (
       <Card 
         style={styles.gameCard} 
-        onPress={() => navigation.navigate('GameDetail', { gameId: game._id })}
+        onPress={() => navigation.navigate('PremiumGameDetail', { gameId: game._id })}
       >
         <Card.Content>
           <View style={styles.gameHeader}>
@@ -167,7 +167,7 @@ const GamesScreen = ({ navigation }) => {
   const handleJoinGame = async (gameId) => {
     try {
       await gameAPI.joinGame(gameId);
-      navigation.navigate('GameDetail', { gameId });
+      navigation.navigate('PremiumGameDetail', { gameId });
     } catch (error) {
       console.error('게임 참가 오류:', error);
     }

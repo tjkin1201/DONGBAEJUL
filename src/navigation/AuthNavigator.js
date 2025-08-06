@@ -5,7 +5,7 @@ import LoginScreen from '../screens/auth/LoginScreen';
 import SignupScreen from '../screens/auth/SignupScreen';
 import ForgotPasswordScreen from '../screens/auth/ForgotPasswordScreen';
 import ResetPasswordScreen from '../screens/auth/ResetPasswordScreen';
-import WelcomeScreen from '../screens/auth/WelcomeScreen';
+import SimpleWelcomeScreen from '../screens/auth/SimpleWelcomeScreen';
 import BandClubSelectionScreen from '../screens/auth/BandClubSelectionScreen';
 
 const Stack = createStackNavigator();
@@ -19,7 +19,7 @@ const AuthNavigator = () => {
         cardStyle: { backgroundColor: '#F5F5F5' },
       }}
     >
-      <Stack.Screen name="Welcome" component={WelcomeScreen} />
+      <Stack.Screen name="Welcome" component={SimpleWelcomeScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Signup" component={SignupScreen} />
       <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />

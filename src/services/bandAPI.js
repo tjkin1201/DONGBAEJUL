@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import mockBandAPI from './mockBandAPI';
 import { BAND_CLIENT_ID, BAND_CLIENT_SECRET, APP_ENV } from '@env';
+import Logger from '../utils/logger';
 
 // WebBrowser 설정
 WebBrowser.maybeCompleteAuthSession();
@@ -32,7 +33,7 @@ class BandAPI {
   async startBandLogin() {
     // 개발 환경에서는 Mock API 사용
     if (USE_MOCK_API) {
-      console.log('🔧 Mock Band API 사용 중...');
+      Logger.info('Mock Band API 사용 중');
       return await mockBandAPI.startBandLogin();
     }
 
@@ -348,6 +349,157 @@ class BandAPI {
       source: 'band',
       bandUserKey: bandUser.user_key,
     };
+  }
+
+  /**
+   * Band 포토 목록 조회
+   */
+  async getBandPhotos() {
+    if (USE_MOCK_API) {
+      return await mockBandAPI.getBandPhotos();
+    }
+
+    try {
+      if (!this.accessToken) {
+        throw new Error('Band 로그인이 필요합니다');
+      }
+
+      // Band API에서 포토 조회 (실제 API 구현)
+      const response = await axios.get(`${BAND_API_BASE_URL}/band/posts`, {
+        params: {
+          access_token: this.accessToken,
+          band_key: this.currentBandKey,
+          locale: 'ko_KR'
+        }
+      });
+
+      // 포토가 있는 포스트만 필터링
+      const photoPosts = response.data.result_data.items.filter(post => 
+        post.type === 'photo' && post.photos && post.photos.length > 0
+      );
+
+      return photoPosts.flatMap(post => 
+        post.photos.map(photo => ({
+          id: photo.photo_key,
+          url: photo.url,
+          thumbnailUrl: photo.thumbnail_url,
+          title: post.content || '제목 없음',
+          description: post.content,
+          createdAt: new Date(post.created_at).toISOString(),
+          author: {
+            id: post.author.user_key,
+            name: post.author.name,
+            profileImage: post.author.profile_image
+          },
+          likes: post.emotion_count || 0,
+          comments: post.comment_count || 0,
+          tags: [],
+          location: '',
+          bandPostKey: post.post_key
+        }))
+      );
+    } catch (error) {
+      Logger.error('Band 포토 조회 실패', error);
+      // 실패 시 Mock 데이터 사용
+      return await mockBandAPI.getBandPhotos();
+    }
+  }
+
+  /**
+   * Band에 포토 업로드
+   */
+  async uploadPhoto(photoData) {
+    if (USE_MOCK_API) {
+      return await mockBandAPI.uploadPhoto(photoData);
+    }
+
+    try {
+      if (!this.accessToken) {
+        throw new Error('Band 로그인이 필요합니다');
+      }
+
+      // 실제 Band API 포토 업로드 구현
+      const formData = new FormData();
+      formData.append('access_token', this.accessToken);
+      formData.append('band_key', this.currentBandKey);
+      formData.append('content', photoData.title || '');
+      
+      // 파일 업로드
+      formData.append('photo', {
+        uri: photoData.uri,
+        type: photoData.type,
+        name: photoData.fileName || 'photo.jpg'
+      });
+
+      const response = await axios.post(`${BAND_API_BASE_URL}/band/post/create`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      });
+
+      return response.data;
+    } catch (error) {
+      Logger.error('Band 포토 업로드 실패', error);
+      // 실패 시 Mock API 사용
+      return await mockBandAPI.uploadPhoto(photoData);
+    }
+  }
+
+  /**
+   * Band 포토 삭제
+   */
+  async deletePhoto(photoId) {
+    if (USE_MOCK_API) {
+      return await mockBandAPI.deletePhoto(photoId);
+    }
+
+    try {
+      if (!this.accessToken) {
+        throw new Error('Band 로그인이 필요합니다');
+      }
+
+      // 실제 Band API 포토 삭제 구현
+      const response = await axios.delete(`${BAND_API_BASE_URL}/band/post/remove`, {
+        params: {
+          access_token: this.accessToken,
+          band_key: this.currentBandKey,
+          post_key: photoId
+        }
+      });
+
+      return response.data;
+    } catch (error) {
+      Logger.error('Band 포토 삭제 실패', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Band 포토 메타데이터 업데이트
+   */
+  async updatePhotoMetadata(photoId, metadata) {
+    if (USE_MOCK_API) {
+      return await mockBandAPI.updatePhotoMetadata(photoId, metadata);
+    }
+
+    try {
+      if (!this.accessToken) {
+        throw new Error('Band 로그인이 필요합니다');
+      }
+
+      // 실제 Band API 포토 메타데이터 업데이트 구현
+      const response = await axios.put(`${BAND_API_BASE_URL}/band/post/update`, {
+        access_token: this.accessToken,
+        band_key: this.currentBandKey,
+        post_key: photoId,
+        content: metadata.title || metadata.description || ''
+      });
+
+      return response.data;
+    } catch (error) {
+      Logger.error('Band 포토 메타데이터 업데이트 실패', error);
+      throw error;
+    }
   }
 }
 

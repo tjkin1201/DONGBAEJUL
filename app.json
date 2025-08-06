@@ -5,6 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
+    "scheme": "dongbaejul",
     "splash": {
       "resizeMode": "contain",
       "backgroundColor": "#1976D2"

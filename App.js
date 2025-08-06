@@ -3,8 +3,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { AuthProvider } from './src/context/AuthContext';
-import { SocketProvider } from './src/context/SocketContext';
+import { AuthProvider } from './src/context/SimpleAuthContext';
+import { SocketProvider } from './src/context/NewSocketContext';
+import { NotificationProvider } from './src/context/NotificationContext';
 import AppNavigator from './src/navigation/AppNavigator';
 import theme from './src/utils/theme';
 
@@ -13,11 +14,13 @@ export default function App() {
     <SafeAreaProvider>
       <PaperProvider theme={theme}>
         <AuthProvider>
-          <SocketProvider>
-            <NavigationContainer>
-              <AppNavigator />
-            </NavigationContainer>
-          </SocketProvider>
+          <NotificationProvider>
+            <SocketProvider>
+              <NavigationContainer>
+                <AppNavigator />
+              </NavigationContainer>
+            </SocketProvider>
+          </NotificationProvider>
         </AuthProvider>
       </PaperProvider>
     </SafeAreaProvider>

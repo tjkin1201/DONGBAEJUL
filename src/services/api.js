@@ -1,6 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_BASE_URL } from '@env';
+import Logger from '../utils/logger';
 
 // API 기본 설정
 const api = axios.create({
@@ -20,7 +21,7 @@ api.interceptors.request.use(
         config.headers.Authorization = `Bearer ${token}`;
       }
     } catch (error) {
-      console.error('토큰 조회 오류:', error);
+      Logger.error('토큰 조회 오류', error);
     }
     return config;
   },

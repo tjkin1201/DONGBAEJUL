@@ -1,9 +1,6 @@
-import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
-import { AppState } from 'react-native';
-import io from 'socket.io-client';
-import { SOCKET_URL } from '@env';
-import { useAuth } from './AuthContext';
-import { showMessage } from 'react-native-flash-message';
+import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import SocketService from '../services/SocketService';
+import { useAuth } from './SimpleAuthContext';
 
 const SocketContext = createContext();
 

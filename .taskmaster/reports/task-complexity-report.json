@@ -1,0 +1,85 @@
+{
+	"meta": {
+		"generatedAt": "2025-08-06T11:20:58.280Z",
+		"tasksAnalyzed": 9,
+		"totalTasks": 10,
+		"analysisCount": 9,
+		"thresholdScore": 5,
+		"projectName": "Taskmaster",
+		"usedResearch": false
+	},
+	"complexityAnalysis": [
+		{
+			"taskId": 2,
+			"taskTitle": "Implement Naver Band OAuth Authentication System",
+			"complexityScore": 8,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Break down OAuth implementation into: expo-auth-session configuration, authentication service with login/logout, token management and refresh, secure token storage with SecureStore, Band API wrapper with error handling, and AuthContext state management",
+			"reasoning": "High complexity due to OAuth 2.0 flow implementation, token management, secure storage requirements, API integration, and cross-platform considerations. Critical foundation component requiring robust error handling."
+		},
+		{
+			"taskId": 3,
+			"taskTitle": "Create Main Navigation Structure and Home Screen Layout",
+			"complexityScore": 6,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Divide into: React Navigation 6 setup with bottom tabs and stack navigators, HomeScreen component with club info and announcements display, responsive layout implementation with Paper components, and navigation state management with deep linking",
+			"reasoning": "Moderate complexity involving navigation architecture, UI component integration, and responsive design. Depends on authentication being complete but has clear, separable implementation steps."
+		},
+		{
+			"taskId": 4,
+			"taskTitle": "Develop Member Management System with Band API Integration",
+			"complexityScore": 7,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Structure as: MemberService for Band API integration, MembersScreen with searchable list and pagination, member profile components with avatar and contact info, admin role management functionality, and member status indicator system",
+			"reasoning": "High-medium complexity due to API integration, large dataset handling (200+ members), search functionality with Korean text, and admin permission controls. Requires performance optimization for large lists."
+		},
+		{
+			"taskId": 5,
+			"taskTitle": "Build Board System with Announcements and Comments",
+			"complexityScore": 7,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Break into: BoardService CRUD operations, BoardScreen with post categorization and filtering, PostDetailScreen with comment/reply threading, image attachment with ImagePicker, search functionality for Korean text, and admin post management with rich text formatting",
+			"reasoning": "High-medium complexity involving CRUD operations, comment threading, file uploads, search with localization, and admin controls. Multiple interconnected features requiring careful state management."
+		},
+		{
+			"taskId": 6,
+			"taskTitle": "Implement Real-time Chat System with Socket.IO",
+			"complexityScore": 9,
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "Divide into: Socket.IO client setup with reconnection logic, ChatService for message handling and persistence, main group ChatScreen with message bubbles and typing indicators, private messaging system with conversation history, push notification integration, message status tracking, and offline message queuing",
+			"reasoning": "Very high complexity due to real-time communication, Socket.IO integration, message persistence, push notifications, offline handling, and cross-platform considerations. Critical for user engagement but technically challenging."
+		},
+		{
+			"taskId": 7,
+			"taskTitle": "Develop Photo Gallery with Naver Band Integration",
+			"complexityScore": 6,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Structure as: PhotoService for Band API sync and caching, PhotoGalleryScreen with grid layout and filtering, photo upload functionality to both local and Band API, photo detail view with comments, and image optimization with compression for mobile performance",
+			"reasoning": "Moderate complexity involving API synchronization, file uploads, image processing, caching strategies, and performance optimization for mobile devices. Clear separation of concerns but requires careful memory management."
+		},
+		{
+			"taskId": 8,
+			"taskTitle": "Create Game Management System for Administrators",
+			"complexityScore": 8,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Break down into: GameService CRUD operations, admin-only GamesScreen with game creation, real-time GameDetailScreen with Socket.IO score updates, participant management with registration system, game statistics and history tracking, and court/venue scheduling with calendar integration",
+			"reasoning": "High complexity due to real-time features, admin role management, statistical calculations, calendar integration, and dependency on both member management and chat systems. Multiple interconnected features requiring careful architecture."
+		},
+		{
+			"taskId": 9,
+			"taskTitle": "Implement Push Notifications and Offline Support",
+			"complexityScore": 8,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Divide into: Expo Notifications setup with permission handling, NotificationService for targeted notifications, offline data caching with AsyncStorage, offline message/post queuing with sync mechanisms, notification preferences screen, and badge count management",
+			"reasoning": "High complexity due to cross-platform notification handling, offline data synchronization, permission management, and integration with multiple app features. Critical for user retention but technically challenging across platforms."
+		},
+		{
+			"taskId": 10,
+			"taskTitle": "Optimize Performance and Add Final Polish Features",
+			"complexityScore": 7,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Structure as: image loading optimization with lazy loading, list virtualization for performance, accessibility implementation with WCAG compliance, loading states and error boundaries, pull-to-refresh functionality, dark mode theme system, haptic feedback integration, and bundle optimization with code splitting",
+			"reasoning": "High-medium complexity involving performance optimization, accessibility compliance, theming system, and multiple polish features. Requires deep understanding of React Native performance and UX best practices across the entire app."
+		}
+	]
+}

@@ -3,7 +3,7 @@ import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import { Text, TextInput, Button, Surface, Checkbox, Divider } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useForm, Controller } from 'react-hook-form';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/SimpleAuthContext';
 import theme from '../../utils/theme';
 import LoadingScreen from '../../components/LoadingScreen';
 

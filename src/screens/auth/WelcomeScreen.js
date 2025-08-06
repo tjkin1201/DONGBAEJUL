@@ -3,7 +3,7 @@ import { View, StyleSheet, Alert } from 'react-native';
 import { Text, Button, Surface } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/SimpleAuthContext';
 import theme from '../../utils/theme';
 
 const WelcomeScreen = ({ navigation }) => {
