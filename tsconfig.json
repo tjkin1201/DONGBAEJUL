@@ -23,6 +23,7 @@
     "DONGBAEJUL",
     "android",
     "playwright-report",
-    "test-results"
+    "test-results",
+    "src/services/mockBandAPI.js"
   ]
 }
